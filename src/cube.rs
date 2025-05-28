@@ -14,10 +14,7 @@ pub const SEVEN_FACTORIAL: u32 = 5040;
 pub const NUM_ORIENTATIONS: u32 = 3u32.pow(6);
 pub const NUM_STATES: u32 = SEVEN_FACTORIAL * NUM_ORIENTATIONS;
 
-pub const MOVES: &[&str] = &[
-    "U", "U'", "U2", "L", "L'", "L2", "F", "F'", "F2", "R", "R'", "R2", "B", "B'", "B2", "D", "D'",
-    "D2",
-];
+pub const MOVES: &[&str] = &["U", "U'", "U2", "F", "F'", "F2", "R", "R'", "R2"];
 
 /// # There are 9 possible moves that can be applied: they are:
 /// 0: U
@@ -199,6 +196,6 @@ fn pretty_print_moves(moves: Vec<&str>) -> String {
     moves.join(" ")
 }
 
-fn decode_pretty_print_moves(moves: Vec<u8>) -> String {
+pub fn decode_pretty_print_moves(moves: Vec<u8>) -> String {
     pretty_print_moves(decode_moves(moves))
 }
