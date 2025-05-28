@@ -3,12 +3,12 @@ pub mod cube;
 use std::{
     collections::{HashMap, VecDeque},
     fs::File,
-    io::BufWriter,
+    io::{BufWriter, Write},
 };
 
 use cube::{
     CUBE_SOLVED_STATE, NUM_MOVES, apply_move, decode_cube_state, decode_pretty_print_moves,
-    encode_cube_state,
+    encode_cube_state, invert_moves,
 };
 
 fn main() {
@@ -43,8 +43,10 @@ fn main() {
     let mut massive_table: Vec<([u8; 14], Vec<u8>)> = Vec::new();
 
     for (state, solution) in seen_states.into_iter() {
-        massive_table.push((decode_cube_state(state), solution));
+        massive_table.push((decode_cube_state(state), invert_moves(solution)));
     }
+
+    massive_table.sort_by_key(|(_, sol)| sol.len());
 
     save_massive_table_to_file(&massive_table);
 
@@ -53,12 +55,16 @@ fn main() {
 
 fn save_massive_table_to_file(table: &Vec<([u8; 14], Vec<u8>)>) {
     let file = File::create("massive_table.txt").unwrap();
-    let file_buf_writer = BufWriter::new(file);
+    let mut file_buf_writer = BufWriter::new(file);
 
-    let table: Vec<([u8; 14], String)> = table
-        .iter()
-        .map(|(state, sol)| (state.clone(), decode_pretty_print_moves(sol.clone())))
-        .collect();
+    for (state, sol) in table.clone().into_iter() {
+        let sol = decode_pretty_print_moves(sol);
 
-    serde_json::to_writer_pretty(file_buf_writer, &table).unwrap();
+        let state = serde_json::to_string(&state).unwrap();
+
+        file_buf_writer.write(state.as_bytes()).unwrap();
+        file_buf_writer.write(" ".as_bytes()).unwrap();
+        file_buf_writer.write(sol.as_bytes()).unwrap();
+        file_buf_writer.write("\n".as_bytes()).unwrap();
+    }
 }

@@ -199,3 +199,23 @@ fn pretty_print_moves(moves: Vec<&str>) -> String {
 pub fn decode_pretty_print_moves(moves: Vec<u8>) -> String {
     pretty_print_moves(decode_moves(moves))
 }
+
+pub fn invert_move(move_: u8) -> u8 {
+    debug_assert!(move_ < NUM_MOVES);
+    match move_ {
+        0 => 1,
+        1 => 0,
+        2 => 2,
+        3 => 4,
+        4 => 3,
+        5 => 5,
+        6 => 7,
+        7 => 6,
+        8 => 8,
+        _ => unreachable!(),
+    }
+}
+
+pub fn invert_moves(moves: Vec<u8>) -> Vec<u8> {
+    moves.iter().rev().map(|m| invert_move(*m)).collect()
+}
