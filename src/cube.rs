@@ -8,6 +8,29 @@
 /// moves are applied, and therefore the DBL corner always stays in the same location and orientation.
 ///
 /// Also, note that the orientation of all 7 pieces must add up to zero mod 3, which is why `NUM_ORIENTATIONS` is equal t 3^6
+///
+/// The 7 pieces, numbered 0 through 6, are as follows (note DBL not included):
+/// 0: UBL
+/// 1: UBR
+/// 2: UFR
+/// 3: UFL
+/// 4: DFL
+/// 5: DFR
+/// 6: DBR
+///
+/// Illustration of the 7 pieces on the cube:
+///
+///     +---+
+///     |0 1|
+///     |3 2|
+/// +---+---+---+---+
+/// |   |   |   |   |
+/// |   |   |   |   |
+/// +---+---+---+---+
+///     |4 5|
+///     |  6|
+///     +---+
+///
 pub const CUBE_SOLVED_STATE: [u8; 14] = [0, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0];
 pub const NUM_MOVES: u8 = 9;
 pub const SEVEN_FACTORIAL: u32 = 5040;
