@@ -123,6 +123,7 @@ pub fn apply_move(s: &mut [u8; 14], move_: u8) {
     }
 }
 
+/// Encodes the cube state as a single integer from 0 to NUM_STATES
 pub fn encode_cube_state(cube_state: &[u8; 14]) -> u32 {
     let mut orientation_number = 0;
 
@@ -135,6 +136,7 @@ pub fn encode_cube_state(cube_state: &[u8; 14]) -> u32 {
     permutation_number + orientation_number * SEVEN_FACTORIAL
 }
 
+/// Decodes the cube state from a single integer from 0 to NUM_STATES
 pub fn decode_cube_state(cube_state: u32) -> [u8; 14] {
     let mut orientation_number = cube_state / SEVEN_FACTORIAL;
     let permutation_number = cube_state % SEVEN_FACTORIAL;
@@ -156,9 +158,9 @@ pub fn decode_cube_state(cube_state: u32) -> [u8; 14] {
     cube_state
 }
 
+/// See also: encode_perm
+/// https://antoinecomeau.blogspot.com/2014/07/mapping-between-permutations-and.html
 fn decode_perm(k: u32) -> [u8; 7] {
-    // https://antoinecomeau.blogspot.com/2014/07/mapping-between-permutations-and.html
-
     let n: usize = 7;
 
     let mut permuted: [u8; 7] = [255; 7];
@@ -176,9 +178,14 @@ fn decode_perm(k: u32) -> [u8; 7] {
     return permuted;
 }
 
+/// See also: decode_perm
+///
+/// It is possible to encode a permutation of n elements as an integer
+/// from 0 to (n! - 1). This function does that, and I implemented it by
+/// copying the code from here
+/// https://antoinecomeau.blogspot.com/2014/07/mapping-between-permutations-and.html
+/// without really understanding how the code works. Maybe I'll study it later.
 fn encode_perm(perm: &[u8]) -> u32 {
-    // https://antoinecomeau.blogspot.com/2014/07/mapping-between-permutations-and.html
-
     let n: usize = 7;
 
     let mut pos: [u8; 7] = [0, 1, 2, 3, 4, 5, 6];
@@ -224,7 +231,7 @@ pub fn decode_pretty_print_moves(moves: Vec<u8>) -> String {
 }
 
 pub fn invert_move(move_: u8) -> u8 {
-    debug_assert!(move_ < NUM_MOVES);
+    assert!(move_ < NUM_MOVES);
     match move_ {
         0 => 1,
         1 => 0,

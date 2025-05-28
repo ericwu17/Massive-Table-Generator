@@ -1,21 +1,19 @@
 pub mod cube;
 
+use cube::{
+    CUBE_SOLVED_STATE, NUM_MOVES, NUM_STATES, apply_move, decode_cube_state,
+    decode_pretty_print_moves, encode_cube_state, invert_moves,
+};
 use std::{
     collections::{HashMap, VecDeque},
     fs::File,
     io::{BufWriter, Write},
 };
 
-use cube::{
-    CUBE_SOLVED_STATE, NUM_MOVES, NUM_STATES, apply_move, decode_cube_state,
-    decode_pretty_print_moves, encode_cube_state, invert_moves,
-};
-
 fn main() {
     let solved_state = encode_cube_state(&CUBE_SOLVED_STATE);
 
     let mut states_to_visit: VecDeque<u32> = VecDeque::new();
-
     states_to_visit.push_back(solved_state);
 
     let mut seen_states: HashMap<u32, Vec<u8>> = HashMap::new();
